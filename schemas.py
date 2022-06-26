@@ -1,6 +1,14 @@
 from pydantic import BaseModel
 
-class Patients(BaseModel):
+class User(BaseModel):
+    uuid: str
+    username: str = None
+    password: str = None
+    
+    class Config:
+        orm_mode = True
+
+class Patient(BaseModel):
     uuid: str
     first_name: str = None
     last_name: str = None
@@ -9,7 +17,7 @@ class Patients(BaseModel):
     class Config:
         orm_mode = True
 
-class Pharmacies(BaseModel):
+class Pharmacy(BaseModel):
     uuid: str
     name: str = None
     city: str = None
@@ -17,12 +25,13 @@ class Pharmacies(BaseModel):
     class Config:
         orm_mode = True
 
-class Transactions(BaseModel):
+class Transaction(BaseModel):
+    patient: Patient = None
+    pharmacy: Pharmacy = None
     uuid: str
-    patient_uuid: str = None
-    pharmacy_uuid: str = None
     amount: str = None
     timestamp: str = None
+    patient: Patient = None
 
     class Config:
         orm_mode = True

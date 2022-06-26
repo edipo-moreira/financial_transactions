@@ -1,32 +1,44 @@
-from decimal import FloatOperation
-from tokenize import Double, Floatnumber
-from uuid import UUID
-from xmlrpc.client import DateTime
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from database import Base
 
-class Patients(Base):
-    __tablename__ = "patients"
+class User(Base):
+    __tablename__ = "user"
+
+    uuid = Column(Integer, primary_key=True, index=True)
+    username = Column(String)
+
+class UserInDB(User):
+    password: str
+
+class Patient(Base):
+    __tablename__ = "patient"
 
     uuid = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
     date_of_birth = Column(String)
 
-class Pharmacies(Base):
-    __tablename__ = "pharmacies"
+    patient = relationship("Transaction", back_populates="patient")
+
+class Pharmacy(Base):
+    __tablename__ = "pharmacy"
 
     uuid = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     city = Column(String)
 
-class Transactions(Base):
-    __tablename__ = "transactions"
+    pharmacy = relationship("Transaction", back_populates="pharmacy")
+
+class Transaction(Base):
+    __tablename__ = "transaction"
     
     uuid = Column(Integer, primary_key=True, index=True)
-    patient_uuid = Column(String)
-    pharmacy_uuid = Column(String)
+    patient_uuid = Column(Integer, ForeignKey("patient.uuid"))
+    pharmacy_uuid = Column(Integer, ForeignKey("pharmacy.uuid"))
     amount = Column(String)
     timestamp = Column(String)
+
+    patient = relationship("Patient", back_populates="patient")
+    pharmacy = relationship("Pharmacy", back_populates="pharmacy")
