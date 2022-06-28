@@ -1,16 +1,14 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from database import Base
+from app.database.database import Base
 
 class User(Base):
     __tablename__ = "user"
 
     uuid = Column(Integer, primary_key=True, index=True)
     username = Column(String)
-
-class UserInDB(User):
-    password: str
+    password = Column(String)
 
 class Patient(Base):
     __tablename__ = "patient"
