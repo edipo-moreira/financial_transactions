@@ -10,6 +10,10 @@ class User(Base):
     username = Column(String)
     password = Column(String)
 
+class UserInDB(User):
+    password: str
+    
+
 class Patient(Base):
     __tablename__ = "patient"
 

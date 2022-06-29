@@ -1,5 +1,9 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 class AuthDetails(BaseModel):
     username: str
@@ -16,6 +20,10 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+class TokenData(BaseModel):
+    username: Union[str, None] = None
+
 
 class UserUpdate(BaseModel):
     uuid: Optional[str]
