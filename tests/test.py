@@ -13,10 +13,10 @@ from app.api import app
 
 class TestApi(unittest.TestCase):
     client = TestClient(app)
+    data = {"username": "teste", "password": "teste"}
 
     def test_post_token(self):
-        data = {"username": "edipo3", "password": "123"}
-        response = self.client.post("/token", data=json.dumps(data))
+        response = self.client.post("/token", data=json.dumps(self.data))
         body = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -24,7 +24,7 @@ class TestApi(unittest.TestCase):
         )
 
     def test_post_token_non_existent_username_or_password(self):
-        data = {"username": "teste", "password": "teste"}
+        data = {"username": "teste_", "password": "teste_"}
         response = self.client.post("/token", data=json.dumps(data))
         body = response.json()
         self.assertEqual(response.status_code, 401)
@@ -67,8 +67,7 @@ class TestApi(unittest.TestCase):
         self.assertEqual(body, {"detail": "Not authenticated"})
 
     def test_get_patients(self):
-        data = {"username": "edipo3", "password": "123"}
-        response_token = self.client.post("/token", data=json.dumps(data))
+        response_token = self.client.post("/token", data=json.dumps(self.data))
         body_token = response_token.json()
         headers = dict()
         headers["Content-Type"] = "application/json"
@@ -82,8 +81,7 @@ class TestApi(unittest.TestCase):
         )
 
     def test_get_pharmacies(self):
-        data = {"username": "edipo3", "password": "123"}
-        response_token = self.client.post("/token", data=json.dumps(data))
+        response_token = self.client.post("/token", data=json.dumps(self.data))
         body_token = response_token.json()
         headers = dict()
         headers["Content-Type"] = "application/json"
@@ -95,8 +93,7 @@ class TestApi(unittest.TestCase):
         self.assertEqual(list(body[0].keys()), ["uuid", "name", "city"])
 
     def test_get_transactions(self):
-        data = {"username": "edipo3", "password": "123"}
-        response_token = self.client.post("/token", data=json.dumps(data))
+        response_token = self.client.post("/token", data=json.dumps(self.data))
         body_token = response_token.json()
         headers = dict()
         headers["Content-Type"] = "application/json"
